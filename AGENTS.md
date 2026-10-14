@@ -14,6 +14,7 @@ Read the [standards index](.agents/standards/engineering-standards.md) by task t
 
 | Work involving | Skill |
 | --- | --- |
+| REST endpoints, OpenAPI/docs, HTTP errors, request IDs, probes, request metrics | [REST APIs](.agents/skills/go-rest-api/SKILL.md) |
 | Branches, staging, commits, PRs, milestone tags, CI/CD source versions | [Git workflow](.agents/skills/git-workflow/SKILL.md) |
 | Typed records, slices, buffers, batches, codecs, ownership | [Data ownership](.agents/skills/go-data-ownership/SKILL.md) |
 | Storage lifetimes, value/pointer choices, allocation diagnosis | [Stack and heap](.agents/skills/go-stack-vs-heap/SKILL.md) |

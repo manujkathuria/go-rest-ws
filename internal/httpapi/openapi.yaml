@@ -1,0 +1,188 @@
+openapi: 3.1.0
+info:
+  title: go-rest-ws Foundation API
+  version: 0.1.0
+  description: >
+    Minimal runnable service foundation for go-rest-ws, providing liveness, readiness,
+    metrics, and contract documentation endpoints before business logic.
+servers:
+  - url: /
+    description: Current service instance
+
+paths:
+  /healthz:
+    get:
+      summary: Liveness probe
+      description: Returns 200 OK if the process is running. External dependency status is not reflected here.
+      operationId: getLiveness
+      responses:
+        '200':
+          description: Process is alive
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                required:
+                  - status
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /readyz:
+    get:
+      summary: Readiness probe
+      description: Returns 200 OK if the service is ready to accept traffic, or 503 Service Unavailable if draining during shutdown.
+      operationId: getReadiness
+      responses:
+        '200':
+          description: Service is healthy and ready to accept traffic
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ready
+                required:
+                  - status
+        '503':
+          description: Service is draining or not ready to accept traffic
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/X-Request-ID'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: draining
+                required:
+                  - status
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /metrics:
+    get:
+      summary: Prometheus metrics endpoint
+      description: Exposes Prometheus metrics in standard text exposition format.
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Prometheus metrics
+          content:
+            text/plain; version=0.0.4:
+              schema:
+                type: string
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /openapi.yaml:
+    get:
+      summary: Raw OpenAPI specification
+      description: Serves the complete OpenAPI 3.1 contract in YAML format.
+      operationId: getOpenAPISpec
+      responses:
+        '200':
+          description: OpenAPI YAML specification
+          content:
+            application/yaml:
+              schema:
+                type: string
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /docs:
+    get:
+      summary: Interactive API documentation
+      description: Serves interactive API documentation UI rendering the OpenAPI contract.
+      operationId: getDocsUI
+      responses:
+        '200':
+          description: Interactive documentation HTML
+          content:
+            text/html:
+              schema:
+                type: string
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+components:
+  headers:
+    X-Request-ID:
+      description: Correlation request ID assigned to the transaction.
+      schema:
+        type: string
+        example: c3a42940-1a7f-44eb-9799-a86a6176517e
+    Allow:
+      description: List of valid HTTP methods for the requested resource.
+      schema:
+        type: string
+        example: GET
+
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Standard machine-readable error payload.
+      required:
+        - code
+        - message
+        - request_id
+      properties:
+        code:
+          type: string
+          example: NOT_FOUND
+        message:
+          type: string
+          example: The requested resource was not found.
+        request_id:
+          type: string
+          example: c3a42940-1a7f-44eb-9799-a86a6176517e
+
+  responses:
+    NotFound:
+      description: The requested resource does not exist.
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    MethodNotAllowed:
+      description: The HTTP method is not allowed on this resource.
+      headers:
+        Allow:
+          $ref: '#/components/headers/Allow'
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      description: An unexpected internal error occurred.
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/X-Request-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
