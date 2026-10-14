@@ -13,10 +13,13 @@ CREATE TABLE IF NOT EXISTS app.users (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
     -- Constraints enforcing agreed data contracts
+    -- name must be 1-100 characters and free of leading, trailing, or whitespace-only characters (matching Go strings.TrimSpace)
     CONSTRAINT users_name_length CHECK (char_length(name) BETWEEN 1 AND 100),
-    CONSTRAINT users_name_trimmed CHECK (name = btrim(name)),
+    CONSTRAINT users_name_trimmed CHECK (name = btrim(name, E' \t\n\r\v\f') AND name !~ '^[[:space:]]' AND name !~ '[[:space:]]$'),
+
+    -- email must be 3-254 characters, lowercase canonical, trimmed of whitespace, and contain '@'
     CONSTRAINT users_email_length CHECK (char_length(email) BETWEEN 3 AND 254),
-    CONSTRAINT users_email_canonical CHECK (email = lower(btrim(email))),
+    CONSTRAINT users_email_canonical CHECK (email = lower(btrim(email, E' \t\n\r\v\f')) AND email !~ '^[[:space:]]' AND email !~ '[[:space:]]$'),
     CONSTRAINT users_email_format CHECK (email LIKE '%@%'),
     CONSTRAINT users_email_unique UNIQUE (email)
 );
