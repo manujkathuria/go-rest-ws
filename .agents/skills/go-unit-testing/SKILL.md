@@ -12,8 +12,10 @@ Test observable contracts and failure behavior rather than mirroring implementat
 - Define acceptance criteria before tests. For bug fixes, reproduce the defect and confirm failure before fixing it when practical.
 - Prefer standard-library tests and table-driven cases with independent expected values. Do not compute expectations using the algorithm under test.
 - Test isolated decoding and business logic without external services. Substitute narrow external boundaries where needed; avoid broad mock frameworks or redesigning production code solely for mocks.
+- Isolate test fixtures and restore surrounding environment state: configuration tests must restore modified environment variables and clean up fixture artifacts so tests do not leak state or depend on ambient execution order.
 - Distinguish unit tests, protocol/service integration tests, and end-to-end checks. Test doubles cannot establish external transaction semantics or durability.
-- Use controlled identities and clocks where behavior depends on them. Synchronize instead of arbitrary sleeps; bound blocking operations with deadlines and clean up connections, goroutines, and resources.
+- Use controlled identities and clocks where behavior depends on them. Synchronize explicitly instead of using arbitrary sleeps; bound blocking operations with deadlines.
+- Register resource cleanup immediately upon creation: listener and network tests must guarantee cleanup even after failed assertions (such as with `t.Cleanup`), release blocked handlers, close response bodies and listeners, and bound server shutdowns with deadlines and force-close fallbacks to avoid orphaned goroutines.
 
 ## Contract cases
 

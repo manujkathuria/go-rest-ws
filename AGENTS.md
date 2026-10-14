@@ -14,6 +14,7 @@ Read the [standards index](.agents/standards/engineering-standards.md) by task t
 
 | Work involving | Skill |
 | --- | --- |
+| REST endpoints, OpenAPI/docs, HTTP errors, request IDs, probes, request metrics | [REST APIs](.agents/skills/go-rest-api/SKILL.md) |
 | Branches, staging, commits, PRs, milestone tags, CI/CD source versions | [Git workflow](.agents/skills/git-workflow/SKILL.md) |
 | Typed records, slices, buffers, batches, codecs, ownership | [Data ownership](.agents/skills/go-data-ownership/SKILL.md) |
 | Storage lifetimes, value/pointer choices, allocation diagnosis | [Stack and heap](.agents/skills/go-stack-vs-heap/SKILL.md) |
@@ -25,3 +26,7 @@ Read the [standards index](.agents/standards/engineering-standards.md) by task t
 Use concrete types and explicit ownership. Select storage, concurrency controls, and resource limits from actual contracts and measurements. Examples illustrate decisions; they do not prescribe an application architecture. Add focused guidance when recurring needs justify it.
 
 See [.agents/README.md](.agents/README.md) for navigation.
+
+## Development workflow
+
+Follow the agreed [development workflow](.agents/standards/development-workflow.md) for issue structure, branches, optional draft PRs, verification, and merging. This standard is the confirmed baseline; merge strategy and release policy remain project decisions. Existing Git skill suggestions do not finalize those policies.

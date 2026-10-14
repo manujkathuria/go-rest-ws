@@ -2,6 +2,7 @@
 
 Load skills by the task triggers in [AGENTS.md](../../AGENTS.md). These skills apply across projects; the Go skills apply to Go code and do not select an application architecture or external technology.
 
+- [go-rest-api](go-rest-api/SKILL.md)
 - [git-workflow](git-workflow/SKILL.md)
 - [go-data-ownership](go-data-ownership/SKILL.md)
 - [go-stack-vs-heap](go-stack-vs-heap/SKILL.md)
