@@ -1,9 +1,10 @@
-# Engineering standards — baseline v1
+# Engineering standards — baseline v1.1
 
 Reusable Go engineering principles shared by our projects. Read the pair-programming agreement once per task and apply general coding rules when implementing or reviewing Go. Load focused standards by the triggers below; reuse unchanged guidance.
 
 | Standard | Task trigger |
 | --- | --- |
+| [Development workflow](development-workflow.md) | Issue scoping, branches, draft PRs, review, and delivery |
 | [Pair programming](pair-programming.md) | Starting a task; collaboration and review |
 | [Go coding](go-coding.md) | Go implementation, review, or refactoring |
 | [Service foundations](01-service-foundations.md) | Configuration, logging, context, startup, or shutdown |

@@ -1,6 +1,6 @@
 # go-rest-ws
 
-A high-performance, concurrent Go backend service engineered for stateless horizontal scaling, PostgreSQL correctness, and bounded resource utilization. Adopts a REST-first roadmap followed by a WebSockets real-time extension.
+A Go backend showcase starting with a REST service foundation. PostgreSQL-backed business endpoints, horizontal scaling measurements, and a WebSocket extension are planned; capacity has not yet been demonstrated.
 
 ---
 
@@ -21,7 +21,7 @@ The service foundation provides operational endpoints, observability, and contra
 ## Quickstart
 
 ### Prerequisites
-- Go 1.22+ installed (`go version`)
+- Go matching `go.mod` (currently 1.27.1); check with `go version`
 
 ### Running Locally
 ```bash
