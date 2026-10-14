@@ -1,6 +1,6 @@
 # Go pair-programming guide
 
-This file routes reusable Go engineering guidance. Application scope, architecture, dependencies, and performance targets have not been defined here.
+This file routes reusable Go engineering guidance. Application decisions are recorded below as they are agreed; planned work must not be presented as implemented behavior.
 
 ## Collaboration
 
@@ -14,6 +14,7 @@ Read the [standards index](.agents/standards/engineering-standards.md) by task t
 
 | Work involving | Skill |
 | --- | --- |
+| PostgreSQL schema, roles/grants, migrations, indexes, database correctness/performance | [PostgreSQL DBA](.agents/skills/postgresql-dba/SKILL.md) |
 | REST endpoints, OpenAPI/docs, HTTP errors, request IDs, probes, request metrics | [REST APIs](.agents/skills/go-rest-api/SKILL.md) |
 | Branches, staging, commits, PRs, milestone tags, CI/CD source versions | [Git workflow](.agents/skills/git-workflow/SKILL.md) |
 | Typed records, slices, buffers, batches, codecs, ownership | [Data ownership](.agents/skills/go-data-ownership/SKILL.md) |
@@ -30,3 +31,11 @@ See [.agents/README.md](.agents/README.md) for navigation.
 ## Development workflow
 
 Follow the agreed [development workflow](.agents/standards/development-workflow.md) for issue structure, branches, optional draft PRs, verification, and merging. This standard is the confirmed baseline; merge strategy and release policy remain project decisions. Existing Git skill suggestions do not finalize those policies.
+
+## User directory — agreed database direction
+
+- Issue #3 covers PostgreSQL-backed user creation and retrieval.
+- Use database/sql with github.com/lib/pq and explicit SQL. Pool controls belong to database/sql; query/index/transaction choices and workload measurements determine performance. Pin the driver version when implementation begins.
+- Application objects belong in a dedicated non-public schema. The runtime login is appuser with only required data privileges; database ownership and migrations use separate privileges.
+- A scoped DBA role owns the schema/grants/migration proposal and database verification, using the PostgreSQL DBA skill. We review its contract with the API implementation before applying migrations.
+- Schema/database names, migration tooling, ID format, field limits, and email uniqueness/normalization remain to be agreed. No tables, roles, or database infrastructure have been provisioned by this guidance update.
